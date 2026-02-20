@@ -5,8 +5,9 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.Timer;
 
-public class minesweeper extends JFrame implements MouseListener{	
+public class minesweeper extends JFrame implements MouseListener, ActionListener{	
 	// key
 	public static final char flag = 'F';
 	public static final char blank = ' ';
@@ -22,6 +23,7 @@ public class minesweeper extends JFrame implements MouseListener{
 	boolean started = false;
 	boolean gameEnd = false;
 	boolean inLoop = false;
+	boolean easy = false;
 	
 	
 	// visual attributes
@@ -30,13 +32,28 @@ public class minesweeper extends JFrame implements MouseListener{
 	JButton close = new JButton("close");
 	JButton newGame; 
 	JFrame end;
-	JLabel totalBombs, totalFlags, bombsLeft;
+	JLabel timeLabel, totalFlags, bombsLeft;
+	
+	// time attributes
+	long startTime = System.currentTimeMillis(), now, elapsedTime;
+	int seconds, minutes;
+	Timer time = new Timer(1000, new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			now = System.currentTimeMillis();
+			elapsedTime = (now - startTime)/1000;
+			seconds = (int) (elapsedTime % (60));
+			minutes = (int) ((elapsedTime % (60*60)) / 60);
+			
+			timeLabel.setText(String.format("Time: %02d:%02d", minutes, seconds));
+		}
+	});
 	
 	// Constructor for the mine sweeper game
-	public minesweeper (int x, int y, double density) {
+	public minesweeper (int x, int y, double density, boolean easy) {
 		this.x = x;
 		this.y = y;
 		this.density = density;
+		this.easy = easy;
 		
 		// creates the players board with unknowns
 		board = new char[y][x];
@@ -70,19 +87,19 @@ public class minesweeper extends JFrame implements MouseListener{
 		scorePanel = new JPanel(new GridLayout(1, 4));
 		scorePanel.setBackground(palet.primaryColor);
 		
-		totalBombs = new JLabel("Total Bombs: " + String.valueOf(bombs));
+		timeLabel = new JLabel("Time: 00:00");
 		totalFlags = new JLabel("Total Flags: " + String.valueOf(flags));
 		bombsLeft = new JLabel("Bombs Left: " + String.valueOf(bombs - flags));	
 		
-		totalBombs.setForeground(palet.secondaryColor);
+		timeLabel.setForeground(palet.secondaryColor);
 		totalFlags.setForeground(palet.secondaryColor);
 		bombsLeft.setForeground(palet.secondaryColor);
 		
-		totalBombs.setFont(new Font("Comfortaa", Font.PLAIN, 20));
+		timeLabel.setFont(new Font("Comfortaa", Font.PLAIN, 20));
 		totalFlags.setFont(new Font("Comfortaa", Font.PLAIN, 20));
 		bombsLeft.setFont(new Font("Comfortaa", Font.PLAIN, 20));
 		
-		totalBombs.setHorizontalAlignment(JLabel.CENTER);
+		timeLabel.setHorizontalAlignment(JLabel.CENTER);
 		totalFlags.setHorizontalAlignment(JLabel.CENTER);
 		bombsLeft.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -93,8 +110,7 @@ public class minesweeper extends JFrame implements MouseListener{
 		newGame.setFont(new Font("Comfortaa", Font.PLAIN, 20));
 		newGame.addMouseListener(this);
 
-		
-		scorePanel.add(totalBombs);
+		scorePanel.add(timeLabel);
 		scorePanel.add(totalFlags);
 		scorePanel.add(bombsLeft);
 		scorePanel.add(newGame);
@@ -138,9 +154,9 @@ public class minesweeper extends JFrame implements MouseListener{
 		
 	}
 	
+	
 	// updates the visuals of the game
 	public void update () {
-		totalBombs.setText("Total Bombs: " + String.valueOf(bombs));
 		totalFlags.setText("Total Flags: " + String.valueOf(flags));
 		bombsLeft.setText("Bombs Left: " + String.valueOf(bombs - flags));
 		
@@ -174,7 +190,7 @@ public class minesweeper extends JFrame implements MouseListener{
 					} else if (button.getText().equals(String.valueOf(blank))) {
 						button.setBackground(palet.blankTileColor);
 					} else {
-						if (this.flagsMatch(j, i)) {
+						if (this.flagsMatch(j, i) && easy) {
 							button.setBackground(palet.flaggedTileColor);
 						} else {
 							button.setBackground(palet.numberedTileColor);
@@ -336,6 +352,8 @@ public class minesweeper extends JFrame implements MouseListener{
 		}
 		// notes that the game was started and prints the key to console
 		// System.out.println(this.visualize(this.key));
+		this.startTime = System.currentTimeMillis();
+		time.start();
 		started = true;
 	}
 	
@@ -408,6 +426,8 @@ public class minesweeper extends JFrame implements MouseListener{
 		}
 		// notes that the game was started and prints the key to console
 		// System.out.println(this.visualize(this.key));
+		this.startTime = System.currentTimeMillis();
+		time.start();
 		started = true;
 	} 	
 	
@@ -556,6 +576,7 @@ public class minesweeper extends JFrame implements MouseListener{
 	public void endGame() {
 		gameEnd = true;
 		this.forcedUpdate();
+		time.stop();
 		end = new JFrame("Game Over!");
 		endPanel = new JPanel(new GridLayout(2, 1));
 		
@@ -567,9 +588,9 @@ public class minesweeper extends JFrame implements MouseListener{
 				
 		if (this.isWin()) {
 			
-			message.setText("You Win!");
+			message.setText(String.format("You Win! Total Elapsed time is: %02d:%02d", minutes, seconds));
 		} else {
-			message.setText("You Lose!");
+			message.setText(String.format("You Lose! Total Elapsed time is: %02d:%02d", minutes, seconds));
 		}
 		
 		close.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -721,4 +742,11 @@ public class minesweeper extends JFrame implements MouseListener{
 	public void mousePressed(MouseEvent e) {
 		
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 } // end of mine sweeper class

@@ -14,10 +14,11 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 	int x, y;
 	double d;
 	boolean guess = true;
+	boolean easy = false;
 	JPanel panel = new JPanel();
 	JButton randomize, start, close;
 	JSlider xRange, yRange, dRange;
-	JToggleButton dToggle, gToggle;
+	JToggleButton dToggle, gToggle, eToggle;
 	JLabel xText, yText, dText;
 	
 	public menu () {
@@ -46,6 +47,7 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 		
 		dToggle = new JToggleButton("Percentage Bombs");
 		gToggle = new JToggleButton("Guess Mode");
+		eToggle = new JToggleButton("Normal Mode");
 		randomize = new JButton("Randomize");
 		start = new JButton("Start");
 		close = new JButton("Close");
@@ -54,6 +56,8 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 		dToggle.setBorder(BorderFactory.createRaisedBevelBorder());
 		gToggle.addActionListener(this);
 		gToggle.setBorder(BorderFactory.createRaisedBevelBorder());
+		eToggle.addActionListener(this);
+		eToggle.setBorder(BorderFactory.createRaisedBevelBorder());
 		randomize.addActionListener(this);
 		randomize.setBorder(BorderFactory.createRaisedBevelBorder());
 		start.addActionListener(this);
@@ -73,6 +77,8 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 		dToggle.setForeground(palet.secondaryColor);
 		gToggle.setBackground(palet.primaryColor);
 		gToggle.setForeground(palet.secondaryColor);
+		eToggle.setBackground(palet.primaryColor);
+		eToggle.setForeground(palet.secondaryColor);
 		randomize.setBackground(palet.primaryColor);
 		randomize.setForeground(palet.secondaryColor);
 		close.setBackground(palet.primaryColor);
@@ -90,14 +96,15 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 		
 		panel.add(xText);
 		panel.add(xRange);
-		panel.add(randomize);
+		panel.add(gToggle);
 		
 		panel.add(yText);
 		panel.add(yRange);
-		panel.add(start);
+		panel.add(eToggle);
 		
-		panel.add(gToggle);
 		panel.add(close);
+		panel.add(randomize);
+		panel.add(start);
 		
 		this.add(panel);
 		
@@ -110,7 +117,7 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 			this.d /= 100;
 		}
 		
-		minesweeper game = new minesweeper(x, y, d);
+		minesweeper game = new minesweeper(x, y, d, easy);
 		
 		if (guess) {
 			game.make();
@@ -160,6 +167,16 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 				guess = true;
 				gToggle.setText("Guess Mode");
 			}
+		
+		} else if (e.getSource() == eToggle) {
+			if (eToggle.isSelected()) {
+				easy = true;
+				eToggle.setText("Easy Mode");
+			} else {
+				easy = false;
+				eToggle.setText("Normal Mode");
+			}
+		
 		} else if (e.getSource() == randomize) {
 			xRange.setValue((int) (xRange.getMinimum() + Math.random()*(xRange.getMaximum() - xRange.getMinimum() + 1)));
 			yRange.setValue((int) (yRange.getMinimum() + Math.random()*(yRange.getMaximum() - yRange.getMinimum() + 1)));
