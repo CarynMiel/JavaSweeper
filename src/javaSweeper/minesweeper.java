@@ -62,7 +62,10 @@ public class minesweeper extends JFrame implements MouseListener{
 		this.setTitle("JavaSweeper");
 		this.setBackground(Color.decode("#144709"));
 		this.setLayout(new BorderLayout());
+		this.setSize(1080, 720);
+		this.setResizable(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // lets you exit the program by closing the window
+		this.setLocationRelativeTo(null);
 				
 		scorePanel = new JPanel(new GridLayout(1, 4));
 		scorePanel.setBackground(palet.primaryColor);
@@ -112,10 +115,7 @@ public class minesweeper extends JFrame implements MouseListener{
 		
 		this.add(scorePanel, BorderLayout.NORTH);
 		this.add(scroll, BorderLayout.CENTER);
-		
-		this.setSize(1080, 720);
-		
-		this.setResizable(true);
+				
 		
 		// makes buttons for every tile of the board
 		for (int i=0; i<y; i++) {
@@ -561,16 +561,27 @@ public class minesweeper extends JFrame implements MouseListener{
 		
 		end.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		end.setSize(300, 200);
+		end.setLocationRelativeTo(this);
+		
+		JLabel message = new JLabel();
 				
 		if (this.isWin()) {
-			endPanel.add(new JLabel("You Win!"));
+			
+			message.setText("You Win!");
 		} else {
-			endPanel.add(new JLabel("You Lose!"));
+			message.setText("You Lose!");
 		}
+		
+		close.setBorder(BorderFactory.createRaisedBevelBorder());
 		close.addMouseListener(this);
 		
-		endPanel.setBorder(BorderFactory.createLineBorder(Color.white, 15));
+		message.setForeground(palet.secondaryColor);
+		endPanel.setBorder(BorderFactory.createLineBorder(palet.primaryColor, 15));
+		endPanel.setBackground(palet.primaryColor);
+		close.setBackground(palet.primaryColor);
+		close.setForeground(palet.secondaryColor);
 		
+		endPanel.add(message);
 		endPanel.add(close);
 		
 		end.add(endPanel);

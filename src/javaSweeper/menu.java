@@ -28,6 +28,10 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 	
 	public void setup() {
 		this.setTitle("Minesweeper Setup");
+		this.setSize(600, 250);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		
 		xRange = new JSlider(5, 100, 20);
 		yRange = new JSlider(5, 100, 20);
 		dRange = new JSlider(1, 99, 20);
@@ -76,15 +80,9 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 		start.setBackground(palet.primaryColor);
 		start.setForeground(palet.secondaryColor);
 		
-		
 		panel.setLayout(new GridLayout(4, 3));
 		panel.setBorder(BorderFactory.createLineBorder(palet.primaryColor, 15));
-		panel.setBackground(palet.primaryColor);
-		
-		
-		
-		this.setSize(600, 250);
-		
+		panel.setBackground(palet.primaryColor);		
 		
 		panel.add(dText);
 		panel.add(dRange);
