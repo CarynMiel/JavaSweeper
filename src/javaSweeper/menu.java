@@ -97,7 +97,6 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 		panel.add(start);
 		
 		panel.add(gToggle);
-		
 		panel.add(close);
 		
 		this.add(panel);
