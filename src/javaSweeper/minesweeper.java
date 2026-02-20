@@ -23,6 +23,7 @@ public class minesweeper extends JFrame implements MouseListener{
 	boolean gameEnd = false;
 	boolean inLoop = false;
 	
+	
 	// visual attributes
 	Map<String, JButton> buttons = new HashMap<>();
 	JPanel gamePanel, scorePanel, endPanel;
@@ -64,15 +65,15 @@ public class minesweeper extends JFrame implements MouseListener{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // lets you exit the program by closing the window
 				
 		scorePanel = new JPanel(new GridLayout(1, 4));
-		scorePanel.setBackground(Color.decode("#144709"));
+		scorePanel.setBackground(palet.primaryColor);
 		
 		totalBombs = new JLabel("Total Bombs: " + String.valueOf(bombs));
 		totalFlags = new JLabel("Total Flags: " + String.valueOf(flags));
 		bombsLeft = new JLabel("Bombs Left: " + String.valueOf(bombs - flags));	
 		
-		totalBombs.setForeground(Color.decode("#2b731d"));
-		totalFlags.setForeground(Color.decode("#2b731d"));
-		bombsLeft.setForeground(Color.decode("#2b731d"));
+		totalBombs.setForeground(palet.secondaryColor);
+		totalFlags.setForeground(palet.secondaryColor);
+		bombsLeft.setForeground(palet.secondaryColor);
 		
 		totalBombs.setFont(new Font("Comfortaa", Font.PLAIN, 20));
 		totalFlags.setFont(new Font("Comfortaa", Font.PLAIN, 20));
@@ -83,8 +84,8 @@ public class minesweeper extends JFrame implements MouseListener{
 		bombsLeft.setHorizontalAlignment(JLabel.CENTER);
 		
 		newGame = new JButton("New Game");
-		newGame.setForeground(Color.decode("#2b731d"));
-		newGame.setBackground(Color.decode("#144709"));
+		newGame.setForeground(palet.secondaryColor);
+		newGame.setBackground(palet.primaryColor);
 		newGame.setBorder(BorderFactory.createRaisedBevelBorder());
 		newGame.setFont(new Font("Comfortaa", Font.PLAIN, 20));
 		newGame.addMouseListener(this);
@@ -98,16 +99,16 @@ public class minesweeper extends JFrame implements MouseListener{
 		// setting up a scrolling pane in case the board is too big
 		// setting up a panel with a gridlayout
 		gamePanel = new JPanel(new GridLayout(this.y, this.x, 0, 0));
-		gamePanel.setBackground(Color.decode("#2b731d"));				
+		gamePanel.setBackground(palet.primaryColor);				
 		JScrollPane scroll = new JScrollPane(gamePanel);
 
 		gamePanel.setPreferredSize(new Dimension(cellSize*this.x + 50, cellSize*this.y + 50));
 
-		scorePanel.setBorder(BorderFactory.createLineBorder(Color.decode("#144709"), 25));
+		scorePanel.setBorder(BorderFactory.createLineBorder(palet.primaryColor, 25));
 		
-		gamePanel.setBorder(BorderFactory.createLineBorder(Color.decode("#144709"), 25));
-		scroll.setBorder(BorderFactory.createLineBorder(Color.decode("#144709"), 15));
-		scroll.setBackground(Color.decode("#2b731d"));
+		gamePanel.setBorder(BorderFactory.createLineBorder(palet.primaryColor, 25));
+		scroll.setBorder(BorderFactory.createLineBorder(palet.primaryColor, 15));
+		scroll.setBackground(palet.secondaryColor);
 		
 		this.add(scorePanel, BorderLayout.NORTH);
 		this.add(scroll, BorderLayout.CENTER);
@@ -162,34 +163,39 @@ public class minesweeper extends JFrame implements MouseListener{
 					
 					// colors the buttons depending on the state of the tile
 					if (button.getText().equals(String.valueOf(unknown))) {
-						button.setBackground(Color.decode("#144709"));
-						button.setForeground(Color.decode("#144709"));
+						button.setBackground(palet.unknownTileColor);
+						button.setForeground(palet.unknownTileColor);
 					} else if (button.getText().equals(String.valueOf(bomb))) {
-						button.setBackground(Color.black);
-						button.setForeground(Color.decode("#b51f1f"));
+						button.setBackground(palet.bombTileColor);
+						button.setForeground(palet.flagTileColor);
 					} else if (button.getText().equals(String.valueOf(flag))) {
-						button.setBackground(Color.decode("#b51f1f"));
-						button.setForeground(Color.black);
+						button.setBackground(palet.flagTileColor);
+						button.setForeground(palet.bombTileColor);
 					} else if (button.getText().equals(String.valueOf(blank))) {
-						button.setBackground(Color.gray);
+						button.setBackground(palet.blankTileColor);
 					} else {
-						button.setBackground(Color.lightGray);
+						if (this.flagsMatch(j, i)) {
+							button.setBackground(palet.flaggedTileColor);
+						} else {
+							button.setBackground(palet.numberedTileColor);
+
+						}
 						if (button.getText().equals("1")) {
-							button.setForeground(Color.decode("#1c57eb"));
+							button.setForeground(palet.colorOne);
 						} else if (button.getText().equals("2")) {
-							button.setForeground(Color.decode("#147d22"));
+							button.setForeground(palet.colorTwo);
 						} else if (button.getText().equals("3")) {
-							button.setForeground(Color.decode("#d41919"));
+							button.setForeground(palet.colorThree);
 						} else if (button.getText().equals("4")) {
-							button.setForeground(Color.decode("#09116e"));
+							button.setForeground(palet.colorFour);
 						} else if (button.getText().equals("5")) {
-							button.setForeground(Color.decode("#630e0e"));
+							button.setForeground(palet.colorFive);
 						} else if (button.getText().equals("6")) {
-							button.setForeground(Color.decode("#0b4f73"));
+							button.setForeground(palet.colorSix);
 						} else if (button.getText().equals("7")) {
-							button.setForeground(Color.decode("#17171a"));
+							button.setForeground(palet.colorSeven);
 						} else if (button.getText().equals("8")) {
-							button.setForeground(Color.decode("#cacbcc"));
+							button.setForeground(palet.colorEight);
 						}
 					}
 				}
@@ -589,34 +595,39 @@ public class minesweeper extends JFrame implements MouseListener{
 							
 				// colors the buttons depending on the state of the tile
 				if (button.getText().equals(String.valueOf(unknown))) {
-					button.setBackground(Color.decode("#264f23"));
-					button.setForeground(Color.decode("#264f23"));
+					button.setBackground(palet.unknownTileColor);
+					button.setForeground(palet.unknownTileColor);
 				} else if (button.getText().equals(String.valueOf(bomb))) {
-					button.setBackground(Color.black);
-					button.setForeground(Color.decode("#b51f1f"));
+					button.setBackground(palet.bombTileColor);
+					button.setForeground(palet.flagTileColor);
 				} else if (button.getText().equals(String.valueOf(flag))) {
-					button.setBackground(Color.decode("#b51f1f"));
-					button.setForeground(Color.black);
+					button.setBackground(palet.flagTileColor);
+					button.setForeground(palet.bombTileColor);
 				} else if (button.getText().equals(String.valueOf(blank))) {
-					button.setBackground(Color.gray);
+					button.setBackground(palet.blankTileColor);
 				} else {
-					button.setBackground(Color.lightGray);
+					if (flagsMatch(j, i)) {
+						button.setBackground(palet.flaggedTileColor);
+					} else {
+						button.setBackground(palet.numberedTileColor);
+					}
+					
 					if (button.getText().equals("1")) {
-						button.setForeground(Color.decode("#1c57eb"));
+						button.setForeground(palet.colorOne);
 					} else if (button.getText().equals("2")) {
-						button.setForeground(Color.decode("#147d22"));
+						button.setForeground(palet.colorTwo);
 					} else if (button.getText().equals("3")) {
-						button.setForeground(Color.decode("#d41919"));
+						button.setForeground(palet.colorThree);
 					} else if (button.getText().equals("4")) {
-						button.setForeground(Color.decode("#09116e"));
+						button.setForeground(palet.colorFour);
 					} else if (button.getText().equals("5")) {
-						button.setForeground(Color.decode("#630e0e"));
+						button.setForeground(palet.colorFive);
 					} else if (button.getText().equals("6")) {
-						button.setForeground(Color.decode("#0b4f73"));
+						button.setForeground(palet.colorSix);
 					} else if (button.getText().equals("7")) {
-						button.setForeground(Color.decode("#17171a"));
+						button.setForeground(palet.colorSeven);
 					} else if (button.getText().equals("8")) {
-						button.setForeground(Color.decode("#cacbcc"));
+						button.setForeground(palet.colorEight);
 					}
 				}
 			}

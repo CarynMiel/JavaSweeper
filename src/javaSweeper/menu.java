@@ -47,13 +47,41 @@ public class menu extends JFrame implements ActionListener, ChangeListener{
 		close = new JButton("Close");
 		
 		dToggle.addActionListener(this);
+		dToggle.setBorder(BorderFactory.createRaisedBevelBorder());
 		gToggle.addActionListener(this);
+		gToggle.setBorder(BorderFactory.createRaisedBevelBorder());
 		randomize.addActionListener(this);
+		randomize.setBorder(BorderFactory.createRaisedBevelBorder());
 		start.addActionListener(this);
+		start.setBorder(BorderFactory.createRaisedBevelBorder());
 		close.addActionListener(this);
+		close.setBorder(BorderFactory.createRaisedBevelBorder());
+		
+		xRange.setBackground(palet.primaryColor);
+		yRange.setBackground(palet.primaryColor);
+		dRange.setBackground(palet.primaryColor);
+		
+		xText.setForeground(palet.secondaryColor);
+		yText.setForeground(palet.secondaryColor);
+		dText.setForeground(palet.secondaryColor);
+		
+		dToggle.setBackground(palet.primaryColor);
+		dToggle.setForeground(palet.secondaryColor);
+		gToggle.setBackground(palet.primaryColor);
+		gToggle.setForeground(palet.secondaryColor);
+		randomize.setBackground(palet.primaryColor);
+		randomize.setForeground(palet.secondaryColor);
+		close.setBackground(palet.primaryColor);
+		close.setForeground(palet.secondaryColor);
+		start.setBackground(palet.primaryColor);
+		start.setForeground(palet.secondaryColor);
+		
 		
 		panel.setLayout(new GridLayout(4, 3));
-		panel.setBorder(BorderFactory.createLineBorder(Color.white, 15));
+		panel.setBorder(BorderFactory.createLineBorder(palet.primaryColor, 15));
+		panel.setBackground(palet.primaryColor);
+		
+		
 		
 		this.setSize(600, 250);
 		
